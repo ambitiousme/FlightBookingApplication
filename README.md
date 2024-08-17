@@ -55,28 +55,29 @@ spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
 
 ### Entities Relationship:
 <br />
-User:
-•	Roles: Many-to-Many relationship with Role. Unidirectional from User to Role.
-•	Bookings: One-to-Many relationship with Booking. Bidirectional.
-•	PaymentMethods: One-to-Many relationship with PaymentMethod. Bidirectional.
+User:<br />
+    •	Roles: Many-to-Many relationship with Role. Unidirectional from User to Role.<br />
+    •	Bookings: One-to-Many relationship with Booking. Bidirectional.<br />
+    •	PaymentMethods: One-to-Many relationship with PaymentMethod. Bidirectional.<br />
 <br />
-Flight:
-•	Airline: Many-to-One relationship with Airline. Bidirectional.
-•	DepartureAirport & ArrivalAirport: Many-to-One relationships with Airport. Bidirectional.
-•	FlightSeat: One-to-Many relationship with FlightSeat. Bidirectional.
-•	Booking: One-to-Many relationship with Booking. Bidirectional
+Flight:<br />
+•	Airline: Many-to-One relationship with Airline. Bidirectional.<br />
+•	DepartureAirport & ArrivalAirport: Many-to-One relationships with Airport. Bidirectional.<br />
+•	FlightSeat: One-to-Many relationship with FlightSeat. Bidirectional.<br />
+•	Booking: One-to-Many relationship with Booking. Bidirectional<br />
 <br/>
-Booking:
-•	Passenger: One-to-Many relationship with Passenger. Bidirectional.
-•	Payment: One-to-One relationship with Payment. Bidirectional
-•	FlightSeat: One-to-Many relationship with FlightSeat. Bidirectional.
+Booking:<br />
+•	Passenger: One-to-Many relationship with Passenger. Bidirectional.<br />
+•	Payment: One-to-One relationship with Payment. Bidirectional<br />
+•	FlightSeat: One-to-Many relationship with FlightSeat. Bidirectional.<br />
 <br/>
-FlightSeat:
-•	Passenger: One-to-One relationship with Passenger. Bidirectional.
+FlightSeat:<br />
+•	Passenger: One-to-One relationship with Passenger. Bidirectional.<br />
 <br/>
-Payment:
-•	PaymentMethod: Many-to-One relationship with PaymentMethod. Bidirectional.
+Payment:<br />
+•	PaymentMethod: Many-to-One relationship with PaymentMethod. Bidirectional.<br />
 
+### Developed Utility package for Holding Custom Utility classes.
 
 
 
