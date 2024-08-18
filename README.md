@@ -13,15 +13,28 @@ git push <br />
 ## Date:15/08/2024 DATABASE setup in DOCKER
 Create project by springInitializr. Committing it to GIT.
 ### Creating Docker Compose file
-db.docker-compose.yml  --done
+db.docker-compose.yml
 ### Run Docker Compose to Create and Start the Container
-docker-compose -f /path/to/your/docker-compose.yml up --done
+docker-compose -f /path/to/your/docker-compose.yml up
 ### Commit the Container to Create a New Image 
-docker commit <container_id_or_name> my_custom_image:latest      --done 
+docker commit <container_id_or_name> my_custom_image:latest
 ### Stop and Remove the Container
-docker-compose down                                --done 
-### Run New Containers Using the Committed Image 
-docker run -d --name mySQL_DB  --hostname DBhost -p 3306:3306 mysql_8  --done <br /><br />
+docker-compose down
+<br />
+### For running up containers:
+1.Using a Named Volume:<br />
+docker run --name mySQL_DB -p 3306:3306 --hostname mySQLDB_Host -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=FBA_DATABASE -v mysql-data:/var/lib/mysql mysql_8:latest
+<br />
+2.Using a Bind Mount<br />
+docker run --name mySQL_DB -p 3306:3306 --hostname mySQLDB_Host -e MYSQL_ROOT_PASSWORD=rootpassword -e MYSQL_DATABASE=FBA_DATABASE -v C:\TechSpace\SpringBoot-Project\FlightBookingApplication\mySQL_DB_MOUNT:/var/lib/mysql mysql_8:latest
+<br />
+3. Backup and Restore<br />
+Even with volumes, it's a good practice to back up your data regularly.<br />
+•	Backup:<br />
+docker exec mySQL_DB /usr/bin/mysqldump -u root --password=rootpassword FBA_DATABASE > backup.sql <br />
+•	Restore:<br />
+docker exec -i mySQL_DB /usr/bin/mysql -u root --password=rootpassword FBA_DATABASE < backup.sql<br />
+By using volumes or bind mounts, your MySQL data will persist across container restarts or removals.<br />
 
 Now Started my project Giving error because of Database configuration is not available. <br /><br />
 
@@ -78,6 +91,21 @@ Payment:<br />
 •	PaymentMethod: Many-to-One relationship with PaymentMethod. Bidirectional.<br />
 
 ### Developed Utility package for Holding Custom Utility classes.
+
+### Static Data creation in Database:
+1. Role_DMLs.sql<br />
+2. Airport_DMLs.sql<br />
+3. Airline_DMLs.sql<br />
+4. AirlineSeat_DMLs.sql<br />
+
+### Important Docker Command to run SQL file in containerize DB
+e.g.<br />
+docker cp C:\TechSpace\SpringBoot-Project\FlightBookingApplication\DMLs\Airports_DMLs.sql mySQL_DB:/Airports_DMLs.sql<br />
+In MYSQL<br />
+SOURCE /Airports_DMLs.sql;<br />
+
+
+
 
 
 

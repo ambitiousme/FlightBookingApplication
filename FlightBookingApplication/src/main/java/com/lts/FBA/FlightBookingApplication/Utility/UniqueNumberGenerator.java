@@ -7,5 +7,9 @@ public class UniqueNumberGenerator {
 	public static String generateFlightNumber() {
         return "FL-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
 	}
+	
+	public static String generateAirportNumber() {
+        return "AIR-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+	}
 
 }
