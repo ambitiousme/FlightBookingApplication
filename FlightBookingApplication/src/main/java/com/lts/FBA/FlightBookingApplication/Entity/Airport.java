@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lts.FBA.FlightBookingApplication.Entity.Embeded.Address;
 
 import jakarta.persistence.Column;
@@ -50,9 +51,11 @@ public class Airport {
 	private Address address;
 
 	@OneToMany(mappedBy = "departureAirport")
+	@JsonManagedReference(value = "depotAir-flights")
 	private List<Flight> departureFlights;
 
 	@OneToMany(mappedBy = "arrivalAirport")
+	@JsonManagedReference(value = "arrivalAir-flights")
 	private List<Flight> arrivalFlights;
 
 	@CreationTimestamp

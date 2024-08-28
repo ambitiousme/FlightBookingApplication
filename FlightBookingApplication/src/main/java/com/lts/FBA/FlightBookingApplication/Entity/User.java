@@ -10,10 +10,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import com.lts.FBA.FlightBookingApplication.Entity.Embeded.Address;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,18 +47,23 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 
+	@Column(name = "contact", nullable = false, unique = true)
+	private String contactNo;
+
 	@Column(nullable = false)
 	private int age;
 
 	@Column(name = "DOB", nullable = false)
 	private LocalDate dateOfBirth;
 
+	@Column(nullable = false)
+	private String role;
+
 	@Embedded
 	private Address address;
 
-	@ManyToMany
-	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles;
+	@OneToMany(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+	private List<Passenger> passengers;
 
 	@OneToMany(mappedBy = "user")
 	private List<Booking> bookings;
@@ -144,12 +151,20 @@ public class User {
 		this.address = address;
 	}
 
-	public Set<Role> getRoles() {
-		return roles;
+	public String getContactNo() {
+		return contactNo;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
 	}
 
 	public List<Booking> getBookings() {

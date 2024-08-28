@@ -1,5 +1,6 @@
 package com.lts.FBA.FlightBookingApplication;
 
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -9,5 +10,4 @@ public class FlightBookingApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(FlightBookingApplication.class, args);
 	}
-
 }

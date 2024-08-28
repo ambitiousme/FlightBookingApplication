@@ -39,7 +39,7 @@ public class PaymentMethod {
 
 	@OneToMany(mappedBy = "paymentMethod")
 	private List<Payment> payments;
-
+	
 	public Long getId() {
 		return id;
 	}

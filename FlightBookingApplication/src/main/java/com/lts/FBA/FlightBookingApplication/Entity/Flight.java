@@ -5,6 +5,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.lts.FBA.FlightBookingApplication.Utility.UniqueNumberGenerator;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -44,14 +47,17 @@ public class Flight {
 
 	@ManyToOne
 	@JoinColumn(name = "airline_id", nullable = false)
+	@JsonBackReference(value = "airline-flights")
 	private Airline airline;
 
 	@ManyToOne
 	@JoinColumn(name = "departure_airport_id", nullable = false)
+	@JsonBackReference(value = "depotAir-flights")
 	private Airport departureAirport;
 
 	@ManyToOne
 	@JoinColumn(name = "arrival_airport_id", nullable = false)
+	@JsonBackReference(value = "arrivalAir-flights")
 	private Airport arrivalAirport;
 
 	@Column(nullable = false)
@@ -67,6 +73,7 @@ public class Flight {
 	private Double price;
 
 	@OneToMany(mappedBy = "flight")
+	@JsonManagedReference(value="Flight-FlightSeats")
 	private List<FlightSeat> seats;
 
 	@CreationTimestamp

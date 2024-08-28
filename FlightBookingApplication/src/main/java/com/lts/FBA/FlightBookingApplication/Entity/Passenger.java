@@ -46,6 +46,10 @@ public class Passenger {
 
 	@Embedded
 	private Address address;
+	
+	@ManyToOne
+	@JoinColumn(name = "user_id",nullable = false)
+	private User user; 
 
 	@ManyToOne
 	@JoinColumn(name = "booking_id", nullable = false)

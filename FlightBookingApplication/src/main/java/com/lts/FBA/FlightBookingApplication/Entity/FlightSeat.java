@@ -1,5 +1,12 @@
 package com.lts.FBA.FlightBookingApplication.Entity;
 
+import java.time.LocalDateTime;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,15 +36,40 @@ public class FlightSeat {
 
 	@ManyToOne
 	@JoinColumn(name = "flight_id", nullable = false)
+	@JsonBackReference(value="Flight-FlightSeats")
 	private Flight flight;
 
 	@ManyToOne
-	@JoinColumn(name = "booking_id", nullable = false)
+	@JoinColumn(name = "booking_id",nullable = true)
 	private Booking booking;
 
 	@OneToOne
-	@JoinColumn(name = "passenger_id", nullable = false)
+	@JoinColumn(name = "passenger_id",nullable = true)
 	private Passenger passenger;
+	
+	@CreationTimestamp
+	@Column(name = "created_at")
+	private LocalDateTime creationTm;
+
+	@UpdateTimestamp
+	@Column(name = "updated_at")
+	private LocalDateTime lastUpdateTm;
+
+	public LocalDateTime getCreationTm() {
+		return creationTm;
+	}
+
+	public void setCreationTm(LocalDateTime creationTm) {
+		this.creationTm = creationTm;
+	}
+
+	public LocalDateTime getLastUpdateTm() {
+		return lastUpdateTm;
+	}
+
+	public void setLastUpdateTm(LocalDateTime lastUpdateTm) {
+		this.lastUpdateTm = lastUpdateTm;
+	}
 
 	public Long getId() {
 		return id;

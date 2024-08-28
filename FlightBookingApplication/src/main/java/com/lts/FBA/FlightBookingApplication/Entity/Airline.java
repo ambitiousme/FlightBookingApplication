@@ -2,8 +2,14 @@ package com.lts.FBA.FlightBookingApplication.Entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -45,7 +51,8 @@ public class Airline {
     @OneToMany(mappedBy = "airline")
     private List<Flight> Seat;
 
-    @OneToMany(mappedBy = "airline")
+    @OneToMany(mappedBy = "airline",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "airline-flights")
     private List<Flight> flights;
 
 	public Long getId() {
