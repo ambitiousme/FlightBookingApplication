@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.lts.FBA.FlightBookingApplication.DTO.FlightSeatDTO;
+import com.lts.FBA.FlightBookingApplication.Exception.ResourceNotFoundException;
 import com.lts.FBA.FlightBookingApplication.Mapper.FlightSeatMapper;
 import com.lts.FBA.FlightBookingApplication.Repository.FlightSeatsRepository;
 import com.lts.FBA.FlightBookingApplication.Service.FlightSeatService;
@@ -28,10 +28,17 @@ public class FlightSeatServiceImpl implements FlightSeatService {
 
 	@Override
 	public List<FlightSeatDTO> assignSeatsForFlight(List<FlightSeatDTO> seats) {
-		return repo.saveAll(seats.stream().map(mapper::toEntity).collect(Collectors.toList())).stream()
-				.map(mapper::toDTO).collect(Collectors.toList());
+		log.debug("Entring into function assignSeatsForFlight");
+		try {
+			
+			return repo.saveAll(seats.stream().map(mapper::toEntity).collect(Collectors.toList())).stream()
+					.map(mapper::toDTO).collect(Collectors.toList());
+		} catch (Exception e) {
+			throw new ResourceNotFoundException("Got Exception in assignSeatsForFlight.saveall "+e);
+		}
+		
 	}
-	@Transactional
+	
 	@Override
 	public void deleteByFlightId(Long flightId) {
 		repo.deleteByFlightId(flightId);

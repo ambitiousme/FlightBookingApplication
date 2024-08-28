@@ -8,7 +8,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +24,6 @@ import com.lts.FBA.FlightBookingApplication.DTO.RegisterFlightDTO;
 import com.lts.FBA.FlightBookingApplication.DTO.SearchFlightDTO;
 import com.lts.FBA.FlightBookingApplication.Exception.ResourceNotFoundException;
 import com.lts.FBA.FlightBookingApplication.Service.FlightService;
-import com.lts.FBA.FlightBookingApplication.Service.Impl.FlightSeatServiceImpl;
 
 @RestController
 @RequestMapping("/api/users")
@@ -43,9 +41,8 @@ public class FlightController {
 			@PathVariable("date") @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
 
 		log.debug(
-				"Entering into 'searchFlights(String flightFrom, String flightTo, LocalDate date) return ResponseEntity<List<SearchFlightDTO>>' "
-						+ "of FlightController.class Parameters: " + " flightFrom: " + flightFrom + " flightTo: "
-						+ flightTo + "  date: " + date);
+				"Entering into 'searchFlights(String flightFrom, String flightTo, LocalDate date) return     ResponseEntity<List<SearchFlightDTO>>' of FlightController.class Parameters: "
+						+ " flightFrom: " + flightFrom + " flightTo: " + flightTo + "  date: " + date);
 
 		List<SearchFlightDTO> flightList = flightService.searchFlights(flightFrom, flightTo, date);
 
@@ -87,12 +84,26 @@ public class FlightController {
 			@Valid @PathVariable("flightNumber") String flightNumber) {
 
 		Optional<RegisterFlightDTO> deletedFlight = flightService.deleteFlight(flightNumber);
-		
+
 		if (deletedFlight.isPresent()) {
-	        return new ResponseEntity<>(deletedFlight, HttpStatus.OK); // 
-	    } else {
-	        return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND); 
-	    }
+			return new ResponseEntity<>(deletedFlight, HttpStatus.OK); //
+		} else {
+			return new ResponseEntity<>(Optional.empty(), HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PostMapping("/createBulkFlight")
+	public ResponseEntity<List<RegisterFlightDTO>> createBulkFlight(
+			@Valid @RequestBody List<RegisterFlightDTO> flightDTOList) throws Exception {
+
+		log.debug("Entering into 'createFlight(RegisterFlightDTO flightDTO) return ResponseEntity<RegisterFlightDTO>' "
+				+ "of FlightController.class parameter :: flightDTOList ::" + flightDTOList);
+
+		List<RegisterFlightDTO> createdUser = flightService.insertAllFlights(flightDTOList);
+
+		log.debug("Returning from 'createFlight(RegisterFlightDTO flightDTO) return ResponseEntity<RegisterFlightDTO>' "
+				+ "of FlightController.class returned param: ");
+		return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
 	}
 
 }

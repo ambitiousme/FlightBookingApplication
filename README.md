@@ -106,6 +106,9 @@ SOURCE /Airports_DMLs.sql;<br />
 
 ## Date:18/08/2024 Controller,Service,DTOs and Repository Set up for the projects. -WIP
 
+## Date:18/08/2024
+### USER,Flight,Passenger API created and tested OK
+
 
 
 

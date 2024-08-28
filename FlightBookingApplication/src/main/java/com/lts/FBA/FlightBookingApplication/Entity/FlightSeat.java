@@ -135,4 +135,14 @@ public class FlightSeat {
 		this.passenger = passenger;
 	}
 
+	@Override
+	public String toString() {
+		return "FlightSeat [id=" + id + ", seatNumber=" + seatNumber + ", classType=" + classType + ", availability="
+				+ availability + ", airline_id=" + airline_id + ", flight=" + flight + ", booking=" + booking
+				+ ", passenger=" + passenger + ", creationTm=" + creationTm + ", lastUpdateTm=" + lastUpdateTm + "]";
+	}
+	
+	
+	
+
 }

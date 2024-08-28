@@ -20,40 +20,37 @@ import jakarta.persistence.Table;
 @Table(name = "Airlines")
 public class Airline {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(nullable = false)
-    private String name;
+	@Column(nullable = false)
+	private String name;
 
-    @Column(nullable = false, unique = true)
-    private String code;
-    
-    @Column(nullable = false)
-    private String manufacturer;
-    
-    @Column(nullable = false)
-    private int EconomySeatNum;
-    
-    @Column(nullable = false)
-    private int BusinessSeatNum;
-    
-    @Column(nullable = false)
-    private int totalSeats;
-      
-    @Column(nullable = false)
-    private String status;//Indicates whether the aircraft is active, under maintenance, or retired.
-    
-    @Column(nullable = false)
-    private LocalDateTime lastMaintenanceDate;
-    
-    @OneToMany(mappedBy = "airline")
-    private List<Flight> Seat;
+	@Column(nullable = false, unique = true)
+	private String code;
 
-    @OneToMany(mappedBy = "airline",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference(value = "airline-flights")
-    private List<Flight> flights;
+	@Column(nullable = false)
+	private String manufacturer;
+
+	@Column(nullable = false)
+	private int EconomySeatNum;
+
+	@Column(nullable = false)
+	private int BusinessSeatNum;
+
+	@Column(nullable = false)
+	private int totalSeats;
+
+	@Column(nullable = false)
+	private String status;// Indicates whether the aircraft is active, under maintenance, or retired.
+
+	@Column(nullable = false)
+	private LocalDateTime lastMaintenanceDate;
+
+	@OneToMany(mappedBy = "airline", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonManagedReference(value = "airline-flights")
+	private List<Flight> flights;
 
 	public Long getId() {
 		return id;
@@ -127,20 +124,19 @@ public class Airline {
 		this.lastMaintenanceDate = lastMaintenanceDate;
 	}
 
-	public List<Flight> getSeat() {
-		return Seat;
-	}
-
-	public void setSeat(List<Flight> seat) {
-		Seat = seat;
-	}
-
 	public List<Flight> getFlights() {
 		return flights;
 	}
 
 	public void setFlights(List<Flight> flights) {
 		this.flights = flights;
+	}
+
+	@Override
+	public String toString() {
+		return "Airline [id=" + id + ", name=" + name + ", code=" + code + ", manufacturer=" + manufacturer
+				+ ", EconomySeatNum=" + EconomySeatNum + ", BusinessSeatNum=" + BusinessSeatNum + ", totalSeats="
+				+ totalSeats + ", status=" + status + ", lastMaintenanceDate=" + lastMaintenanceDate +  "]";
 	}
 
 }

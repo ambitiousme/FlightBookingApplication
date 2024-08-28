@@ -204,4 +204,15 @@ public class Flight {
 		this.lastUpdateTm = lastUpdateTm;
 	}
 
+	@Override
+	public String toString() {
+		return "Flight [id=" + id + ", flightNumber=" + flightNumber + ", source=" + source + ", destination="
+				+ destination + ", totalDistance=" + totalDistance + ", airline=" + airline + ", departureAirport="
+				+ departureAirport + ", arrivalAirport=" + arrivalAirport + ", departureTime=" + departureTime
+				+ ", arrivalTime=" + arrivalTime + ", duration=" + duration + ", price=" + price + ", seats=" + seats
+				+ ", creationTm=" + creationTm + ", lastUpdateTm=" + lastUpdateTm + "]";
+	}
+
+	
+	
 }

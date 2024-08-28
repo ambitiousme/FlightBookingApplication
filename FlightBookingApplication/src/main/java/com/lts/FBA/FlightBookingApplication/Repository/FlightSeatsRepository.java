@@ -14,7 +14,6 @@ import com.lts.FBA.FlightBookingApplication.Entity.FlightSeat;
 @Repository
 public interface FlightSeatsRepository extends JpaRepository<FlightSeat, Long> {
 	
-	@Transactional
 	@Modifying
 	@Query("DELETE FROM FlightSeat FS WHERE FS.flight.id =:flightId")
 	void deleteByFlightId(@Param("flightId") Long flightId);

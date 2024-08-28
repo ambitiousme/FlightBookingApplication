@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.lts.FBA.FlightBookingApplication.DTO.FlightSeatDTO;
 import com.lts.FBA.FlightBookingApplication.DTO.RegisterFlightDTO;
@@ -39,13 +40,13 @@ public class FlightServiceImpl implements FlightService {
 
 	@Autowired
 	FlightMapper flightMapper;
-	
+
 	@Autowired
 	FlightSeatMapper flightSeatMapper;
 
 	@Autowired
 	FlightRepository flightRepo;
-	
+
 	@Autowired
 	FlightSeatService flightSeatService;
 
@@ -110,6 +111,7 @@ public class FlightServiceImpl implements FlightService {
 	}
 
 	@Override
+	@Transactional
 	public RegisterFlightDTO createFlight(RegisterFlightDTO flightDTO) {
 
 		log.debug("Entering into 'createFlight(RegisterFlightDTO flightDTO) return RegisterFlightDTO' "
@@ -131,6 +133,7 @@ public class FlightServiceImpl implements FlightService {
 			e.printStackTrace();
 		}
 
+		
 		Flight savedFlight = flightRepo.save(regFlight);
 
 		log.debug("savedFlight : " + savedFlight);
@@ -145,14 +148,16 @@ public class FlightServiceImpl implements FlightService {
 
 			FlightSeat flightSeat = new FlightSeat();
 			AirlineSeatToFlightSeatMapper.airlineToFlightSeat(airlineSeat, flightSeat, savedFlight);
+			
+			
 			flightSeatList.add(flightSeatMapper.toDTO(flightSeat));
+			
 		}
 
 		try {
 			flightSeatService.assignSeatsForFlight(flightSeatList);
 		} catch (Exception e) {
-			new ResourceNotFoundException("Got one exception while adding flight seats: " + e);
-			e.printStackTrace();
+			throw new ResourceNotFoundException("Got one exception while adding flight seats: " + e);
 		}
 
 		log.debug("Returning from 'createFlight(RegisterFlightDTO flightDTO) return RegisterFlightDTO' "
@@ -191,7 +196,8 @@ public class FlightServiceImpl implements FlightService {
 	}
 
 	@Override
-	public Optional<RegisterFlightDTO> deleteFlight(String flightNumber) {
+	@Transactional
+	public Optional<RegisterFlightDTO> deleteFlight(String flightNumber) throws ResourceNotFoundException {
 
 		log.debug("Entering into 'deleteFlight(Long flightId) return Optional<RegisterFlightDTO>' Parameters: "
 				+ "of FlightServiceImpl.class" + " flightNumber : " + flightNumber);
@@ -200,7 +206,7 @@ public class FlightServiceImpl implements FlightService {
 				() -> new ResourceNotFoundException("Flight does not exist with flight Number : " + flightNumber));
 
 		RegisterFlightDTO flightDTO = flightMapper.toRegDTO(flight);
-		
+
 		flightSeatService.deleteByFlightId(flight.getId());
 
 		flightRepo.deleteByFlightNumber(flightNumber);
@@ -213,23 +219,21 @@ public class FlightServiceImpl implements FlightService {
 	}
 
 	@Override
+	@Transactional
 	public List<RegisterFlightDTO> insertAllFlights(Iterable<RegisterFlightDTO> flightList) throws Exception {
 
 		log.debug("Entering into 'insertAllFlights(Iterable<RegisterFlightDTO> return List<RegisterFlightDTO>'"
 				+ "of FlightServiceImpl.class Parameters: " + " flightId : " + flightList.toString());
 
-		log.debug("Returning from 'deleteFlight(Long flightId) return Optional<RegisterFlightDTO>'"
-				+ "of FlightServiceImpl.class returned param: ");
+		List<RegisterFlightDTO> flightDTOList = new ArrayList<>();
 
-		return null;
-		/*
-		 * List<RegisterFlightDTO> flightDTOList = (List<RegisterFlightDTO>) flightList
-		 * ;
-		 * 
-		 * return
-		 * flightRepo.saveAll(flightDTOList.stream().map(flightMapper::toEntity).toList(
-		 * )) .stream().map(flightMapper::toRegDTO).toList();
-		 */
+		for (RegisterFlightDTO flightDTO : flightList)
+			flightDTOList.add(createFlight(flightDTO));
+
+		log.debug("Returning from 'deleteFlight(Long flightId) return Optional<RegisterFlightDTO>'"
+				+ "of FlightServiceImpl.class returned param: flightDTOList : " + flightDTOList);
+
+		return flightDTOList;
 
 	}
 
